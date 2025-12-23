@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  task-tracker:
+    build: .
+    container_name: task-tracker-mcp
+    ports:
+      - "8000:8000"
+    environment:
+      TASK_TRACKER_MCP_PORT: "8000"
+      PYTHONUNBUFFERED: "1"
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+    # Uncomment to enable detailed logging
+    # logging:
+    #   driver: "json-file"
+    #   options:
+    #     max-size: "10m"
+    #     max-file: "3"
+
+# Example with custom port:
+# services:
+#   task-tracker:
+#     build: .
+#     container_name: task-tracker-mcp
+#     ports:
+#       - "9000:9000"
+#     environment:
+#       TASK_TRACKER_MCP_PORT: "9000"
+#     volumes:
+#       - ./data:/data
+#     restart: unless-stopped
