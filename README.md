@@ -16,7 +16,25 @@ A comprehensive task tracking and management system accessible via the **Model C
 
 ## Quick Start
 
-### Option 1: Local Installation
+### Option 1: From Docker Hub (Easiest - No Setup)
+
+Pre-built images are available on Docker Hub at `ywatanabe/task-tracker`.
+
+**Any machine** (Windows, macOS, Linux, WSL):
+```bash
+# Pull and run the latest image
+docker run -p 8000:8000 ywatanabe/task-tracker:latest
+
+# Or specify a version
+docker run -p 8000:8000 ywatanabe/task-tracker:1.0.0
+
+# Or use docker-compose
+docker run -d -p 8000:8000 ywatanabe/task-tracker:latest
+```
+
+**That's it!** No cloning, no installation, no dependencies. The server runs immediately.
+
+### Option 2: Local Installation
 
 ```bash
 # Clone the repository
@@ -30,9 +48,13 @@ pip install -e .
 python -m task_tracker_mcp.server
 ```
 
-### Option 2: Docker
+### Option 3: Docker (Local Build)
 
 ```bash
+# Clone repository
+git clone https://github.com/yoshiwatanabe/task-tracker-mcp.git
+cd task-tracker-mcp
+
 # Build and run with Docker Compose
 docker-compose up -d
 
@@ -41,13 +63,16 @@ docker build -t task-tracker:latest .
 docker run -p 8000:8000 task-tracker:latest
 ```
 
-### Option 3: Custom Port
+### Option 4: Custom Port
 
 ```bash
 # Local with custom port
 TASK_TRACKER_MCP_PORT=9000 python -m task_tracker_mcp.server
 
-# Docker with custom port
+# Docker Hub image with custom port
+docker run -e TASK_TRACKER_MCP_PORT=9000 -p 9000:9000 ywatanabe/task-tracker:latest
+
+# Local Docker with custom port
 docker run -e TASK_TRACKER_MCP_PORT=9000 -p 9000:9000 task-tracker:latest
 
 # Docker Compose with custom port
