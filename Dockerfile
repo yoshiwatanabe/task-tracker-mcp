@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy project files
-COPY pyproject.toml .
+COPY pyproject.toml README.md LICENSE ./
 COPY src/ src/
 
 # Install package
@@ -26,9 +26,9 @@ USER appuser
 ENV TASK_TRACKER_MCP_PORT=8000
 ENV PYTHONUNBUFFERED=1
 
-# Health check (optional, for Docker)
+# Health check: verify database is accessible
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:${TASK_TRACKER_MCP_PORT}/health')" || exit 1
+    CMD python -c "import sqlite3; sqlite3.connect('tasks.db').execute('SELECT 1')" || exit 1
 
 # Default command runs the MCP server via stdio
 CMD ["python", "-m", "task_tracker_mcp.server"]
